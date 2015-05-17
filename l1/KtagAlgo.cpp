@@ -14,6 +14,7 @@
 #include <l0/Subevent.h>
 #include <options/Logging.h>
 #include <string.h>
+#include <math.h>
 
 #include <sys/time.h>
 
@@ -47,7 +48,7 @@ uint_fast8_t KtagAlgo::processKtagTrigger(DecoderHandler& decoder) {
 		/**
 		 * Get Arrays with hit Info
 		 */
-//		const uint64_t* const edge_times = cedarPacket->getTimes();
+		const uint64_t* const edge_times = cedarPacket->getTimes();
 //		const uint_fast8_t* const edge_chIDs = cedarPacket->getChIDs();
 		const bool* const edge_IDs = cedarPacket->getIsLeadings();
 		const uint_fast8_t* const edge_tdcIDs = cedarPacket->getTdcIDs();
@@ -64,8 +65,10 @@ uint_fast8_t KtagAlgo::processKtagTrigger(DecoderHandler& decoder) {
 //			LOG_INFO<< "Edge " << iEdge << " chID " << (uint) edge_chIDs[iEdge] << ENDL;
 //			LOG_INFO<< "Edge " << iEdge << " tdcID " << (uint) edge_tdcIDs[iEdge] << ENDL;
 //			LOG_INFO<< "Edge " << iEdge << " time " << std::hex << edge_times[iEdge] << std::dec << ENDL;
+//			LOG_INFO<< decoder.getDecodedEvent()->getFinetime() << ENDL;
+//			LOG_INFO<< decoder.getDecodedEvent()->getBurstID() << ENDL;
 
-			if (edge_IDs[iEdge]) {
+			if (edge_IDs[iEdge] && (fabs(edge_times[iEdge] - decoder.getDecodedEvent()->getFinetime()) <= 50)) {
 				const uint trbID = edge_tdcIDs[iEdge] / 4;
 				const uint box = calculateSector(
 						cedarPacket->getFragmentNumber(), trbID);
@@ -82,8 +85,6 @@ uint_fast8_t KtagAlgo::processKtagTrigger(DecoderHandler& decoder) {
 	}
 
 //	LOG_INFO<<"KtagAlgo.cpp: Analysing Event " << decoder.getDecodedEvent()->getEventNumber() << " - Timestamp " << std::hex << decoder.getDecodedEvent()->getTimestamp() << std::dec << " - Total Number of edges found " << nEdges_tot << ENDL;
-//	LOG_INFO<<decoder.getDecodedEvent()->getFinetime() << ENDL;
-//	LOG_INFO<<decoder.getDecodedEvent()->getBurstID() << ENDL;
 
 	gettimeofday(&time[4], 0);
 //  LOG_INFO<< "time check (outside for - all Tel62s)" << time[4].tv_sec << " " << time[4].tv_usec << ENDL;
