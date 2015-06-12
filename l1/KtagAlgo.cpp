@@ -80,7 +80,7 @@ uint_fast8_t KtagAlgo::processKtagTrigger(DecoderHandler& decoder) {
 
 				// Algorithm for exercise with PATTI input
 				//const uint box = 2 * (edge_tdcIDs[iEdge] % 4) + (edge_chIDs[iEdge] / 8);
-				LOG_INFO << "box " << box << ENDL;
+//				LOG_INFO << "box " << box << ENDL;
 				sector_occupancy[box]++;
 			}
 			//LOG_INFO<< "ANGELA-L1" << "\t" << decoder.getDecodedEvent()->getEventNumber() << "\t" << decoder.getDecodedEvent()->getTimestamp() << "\t" << (int)edge_IDs[iEdge] << "\t" << (int)edge_chIDs[iEdge]<< "\t" << (int)edge_tdcIDs[iEdge] << "\t" << edge_times[iEdge] << "\t" << trbID << "\t" << box << ENDL;
@@ -111,7 +111,7 @@ uint_fast8_t KtagAlgo::processKtagTrigger(DecoderHandler& decoder) {
 
 //	LOG_INFO<< std::hex << decoder.getDecodedEvent()->getTimestamp() << std::dec << " " << nEdges_tot << " " << nSectors << " " << ((time[4].tv_sec - time[0].tv_sec)*1e6 + time[4].tv_usec) - time[0].tv_usec << " " << ((time[5].tv_sec - time[0].tv_sec)*1e6 + time[5].tv_usec) - time[0].tv_usec << ENDL;
 //	LOG_INFO<< nEdges_tot << " " << ((time[4].tv_sec - time[0].tv_sec)*1e6 + time[4].tv_usec) - time[0].tv_usec << " " << ((time[5].tv_sec - time[0].tv_sec)*1e6 + time[5].tv_usec) - time[0].tv_usec << ENDL;
-	return nSectors > 3;
+	return nSectors > 4;
 }
 
 } /* namespace na62 */
