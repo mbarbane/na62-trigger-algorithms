@@ -140,12 +140,12 @@ void TrbFragmentDecoder::readData(uint_fast32_t timestamp) {
 				edgeTdcIDs[iEdge + nEdges_tot] = (uint) tdcData->tdcID;
 				edgeIsLeading[iEdge + nEdges_tot] = tdcData->ID == 0x4;
 
-//					LOG_INFO<< "edgeChIDs[" << iEdge + nEdges_tot << "] " << (uint) edgeChIDs[iEdge + nEdges_tot] << ENDL;
-//					LOG_INFO<< "edgeTdcIDs[" << iEdge + nEdges_tot << "] " << (uint) edgeTdcIDs[iEdge + nEdges_tot] << ENDL;
-//					LOG_INFO<< "edgeIsLeading["<< iEdge + nEdges_tot << "] " << edgeIsLeading[iEdge + nEdges_tot] << ENDL;
-//					LOG_INFO<< "edgeTimes[" << iEdge + nEdges_tot << "] " << std::hex << edgeTimes[iEdge + nEdges_tot] << std::dec << ENDL;
+//				LOG_INFO<< "edgeChIDs[" << iEdge + nEdges_tot << "] " << (uint) edgeChIDs[iEdge + nEdges_tot] << ENDL;
+//				LOG_INFO<< "edgeTdcIDs[" << iEdge + nEdges_tot << "] " << (uint) edgeTdcIDs[iEdge + nEdges_tot] << ENDL;
+//				LOG_INFO<< "edgeIsLeading["<< iEdge + nEdges_tot << "] " << edgeIsLeading[iEdge + nEdges_tot] << ENDL;
+//				LOG_INFO<< "edgeTimes[" << iEdge + nEdges_tot << "] " << std::hex << edgeTimes[iEdge + nEdges_tot] << std::dec << ENDL;
 //
-//					LOG_INFO<< "TIME (ns) " << ((edgeTimes[iEdge+nEdges_tot] - timestamp* 256.) * 0.097464731802) << ENDL;
+//			 	LOG_INFO<< "TIME (ns) " << ((edgeTimes[iEdge+nEdges_tot] - timestamp* 256.) * 0.097464731802) << ENDL;
 
 			}
 

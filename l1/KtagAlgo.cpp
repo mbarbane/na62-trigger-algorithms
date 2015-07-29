@@ -80,7 +80,7 @@ uint_fast8_t KtagAlgo::processKtagTrigger(DecoderHandler& decoder) {
 //				LOG_INFO << "box " << box << ENDL;
 				sector_occupancy[box]++;
 			}
-			//LOG_INFO<< "ANGELA-L1" << "\t" << decoder.getDecodedEvent()->getEventNumber() << "\t" << decoder.getDecodedEvent()->getTimestamp() << "\t" << (int)edge_IDs[iEdge] << "\t" << (int)edge_chIDs[iEdge]<< "\t" << (int)edge_tdcIDs[iEdge] << "\t" << edge_times[iEdge] << "\t" << trbID << "\t" << box << ENDL;
+//			LOG_INFO<< "ANGELA-L1" << "\t" << decoder.getDecodedEvent()->getEventNumber() << "\t" << decoder.getDecodedEvent()->getTimestamp() << "\t" << (int)edge_IDs[iEdge] << "\t" << (int)edge_chIDs[iEdge]<< "\t" << (int)edge_tdcIDs[iEdge] << "\t" << edge_times[iEdge] << "\t" << trbID << "\t" << box << ENDL;
 		}
 //      LOG_INFO<< "time check (inside iterator - end of computations) " << time[3].tv_sec << " " << time[3].tv_usec << ENDL;
 

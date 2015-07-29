@@ -12,7 +12,6 @@
 #include <eventBuilding/SourceIDManager.h>
 #include <l0/MEPFragment.h>
 #include <l0/Subevent.h>
-#include <eventBuilding/L1Builder.h>
 
 #include "../common/decoding/DecoderHandler.h"
 #include "L1Downscaling.h"
@@ -52,7 +51,7 @@ void L1TriggerProcessor::initialize(double _bypassProbability) {
 
 	L1Downscaling::initialize();
 	L1Reduction::initialize();
-	L1_flag_mode_ = MyOptions::GetBool(OPTION_L1_FLAG_MODE);
+//	L1_flag_mode_ = MyOptions::GetBool(OPTION_L1_FLAG_MODE);
 }
 
 bool L1TriggerProcessor::isRequestZeroSuppressedCreamData(
@@ -68,11 +67,11 @@ uint_fast8_t L1TriggerProcessor::compute(Event* const event) {
 
 	event->readTriggerTypeWordAndFineTime();
 
-	const l0::MEPFragment* const L1Fragment =
-			event->getL1Subevent()->getFragment(0);
+//	const l0::MEPFragment* const L1Fragment =
+//			event->getL1Subevent()->getFragment(0);
 
-	const char* payload = L1Fragment->getPayload();
-	L1_BLOCK * l1Block = (L1_BLOCK *) (payload);
+//	const char* payload = L1Fragment->getPayload();
+//	L1_BLOCK * l1Block = (L1_BLOCK *) (payload);
 
 // Setting the new globalDownscaleFactor and globalReductionFactor in L1Block
 
@@ -85,21 +84,21 @@ uint_fast8_t L1TriggerProcessor::compute(Event* const event) {
 	/*
 	 * Check if the event should bypass the processing
 	 */
-	if (bypassEvent() || event->isSpecialTriggerEvent()) {
+	if (bypassEvent() || event->isSpecialTriggerEvent() || !event->getTimestamp()) {
 		// Request zero suppressed CREAM data for bypassed events?
 		event->setRrequestZeroSuppressedCreamData(
 				isRequestZeroSuppressedCreamData(TRIGGER_L1_BYPASS));
 
-		l1Block->triggerword = TRIGGER_L1_BYPASS;
+//		l1Block->triggerword = TRIGGER_L1_BYPASS;
 		return TRIGGER_L1_BYPASS;
 	}
 
-	uint_fast8_t l1Trigger;
-	if (L1_flag_mode_) {
-		l1Trigger = 1;
-	} else {
-		l1Trigger = 0;
-	}
+	uint_fast8_t l1Trigger=0;
+//	if (L1_flag_mode_) {
+//		l1Trigger = 1;
+//	} else {
+//		l1Trigger = 0;
+//	}
 
 	uint_fast8_t cedarTrigger = 0;
 	uint_fast8_t chodTrigger = 0;
@@ -169,7 +168,7 @@ uint_fast8_t L1TriggerProcessor::compute(Event* const event) {
 			isRequestZeroSuppressedCreamData(l1Trigger));
 	event->setProcessingID(0); // 0 indicates raw data as collected from the detector
 
-	l1Block->triggerword = l1Trigger;
+//	l1Block->triggerword = l1Trigger;
 
 	return l1Trigger;
 }
