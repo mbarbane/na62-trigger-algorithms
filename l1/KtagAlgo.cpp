@@ -27,14 +27,29 @@
 namespace na62 {
 
 double KtagAlgo::averageCHODHitTime = 0.;
+uint KtagAlgo::l1RefTimeDetId;
+uint KtagAlgo::l0tpSourceId = 0;
+uint KtagAlgo::chodSourceId = 1;
+bool KtagAlgo::isCHODEmpty = false;
+
 uint_fast8_t KtagAlgo::processKtagTrigger(DecoderHandler& decoder,L1InfoToStorage* l1Info) {
 
 //  LOG_INFO<< "Initial Time " << time[0].tv_sec << " " << time[0].tv_usec << ENDL;
 
 	using namespace l0;
 
+//	LOG_INFO<< "l1ReferenceTimeSource " << l1Info->getL1ReferenceTimeSource() << ENDL;
+//	LOG_INFO<< "l0tpSourceId " << l0tpSourceId << ENDL;
+//	LOG_INFO<< "chodSourceId " << chodSourceId << ENDL;
+
+	l1RefTimeDetId = l1Info->getL1ReferenceTimeSource();
+//	LOG_INFO<< "l1RefTimeDetId " << l1RefTimeDetId << ENDL;
+
 	averageCHODHitTime = l1Info->getCHODAverageTime();
 //	LOG_INFO<< "PATchodtime " << averageCHODHitTime << ENDL;
+
+	isCHODEmpty = l1Info->getCHODEmptyFlag();
+//	LOG_INFO<< "PATchodEmptyFlag " << isCHODEmpty << ENDL;
 
 	uint sector_occupancy_chod[8] = { 0 };
 	uint sector_occupancy_l0tp[8] = { 0 };
@@ -101,7 +116,7 @@ uint_fast8_t KtagAlgo::processKtagTrigger(DecoderHandler& decoder,L1InfoToStorag
 //const uint box = 2 * (edge_tdcIDs[iEdge] % 4) + (edge_chIDs[iEdge] / 8);
 //				LOG_INFO << "box " << box << ENDL;
 				if (dt_l0tp<10.) sector_occupancy_l0tp[box]++;
-				if (dt_chod<10.) sector_occupancy_chod[box]++;
+				if (!isCHODEmpty && (dt_chod<10.)) sector_occupancy_chod[box]++;
 			}
 //			LOG_INFO<< "ANGELA-L1" << "\t" << decoder.getDecodedEvent()->getEventNumber() << "\t" << decoder.getDecodedEvent()->getTimestamp() << "\t" << (int)edge_IDs[iEdge] << "\t" << (int)edge_chIDs[iEdge]<< "\t" << (int)edge_tdcIDs[iEdge] << "\t" << edge_times[iEdge] << "\t" << trbID << "\t" << box << ENDL;
 		}
@@ -135,7 +150,9 @@ uint_fast8_t KtagAlgo::processKtagTrigger(DecoderHandler& decoder,L1InfoToStorag
 //	LOG_INFO<< std::hex << decoder.getDecodedEvent()->getTimestamp() << std::dec << " " << nEdges_tot << " " << nSectors << " " << ((time[4].tv_sec - time[0].tv_sec)*1e6 + time[4].tv_usec) - time[0].tv_usec << " " << ((time[5].tv_sec - time[0].tv_sec)*1e6 + time[5].tv_usec) - time[0].tv_usec << ENDL;
 //	LOG_INFO<< nEdges_tot << " " << ((time[4].tv_sec - time[0].tv_sec)*1e6 + time[4].tv_usec) - time[0].tv_usec << " " << ((time[5].tv_sec - time[0].tv_sec)*1e6 + time[5].tv_usec) - time[0].tv_usec << ENDL;
 //	return ((nSectors_l0tp > 4) || (nSectors_chod > 4));
-	return (nSectors_l0tp > 4);
+//	return (nSectors_l0tp > 4);
+//	return (nSectors_chod > 4);
+	return (((l1RefTimeDetId==l0tpSourceId)&&(nSectors_l0tp > 4)) || ((l1RefTimeDetId==chodSourceId)&&(nSectors_chod > 4)));
 }
 
 } /* namespace na62 */

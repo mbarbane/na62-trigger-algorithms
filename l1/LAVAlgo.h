@@ -43,6 +43,10 @@ private:
 	static int hit[maxNROchs];
 	static uint nHits;
 	static double averageCHODHitTime;
+	static uint l1RefTimeDetId;
+	static uint l0tpSourceId;
+	static uint chodSourceId;
+	static bool isCHODEmpty;
 
 };
 

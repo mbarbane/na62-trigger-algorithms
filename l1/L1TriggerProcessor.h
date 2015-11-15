@@ -64,6 +64,8 @@ public:
 	static bool isRequestZeroSuppressedCreamData(
 			uint_fast8_t l1TriggerTypeWord);
 
+	static void setL1ReferenceTimeSource(uint l0SourceId);
+
 	static void initialize(double _bypassProbability);
 
 private:

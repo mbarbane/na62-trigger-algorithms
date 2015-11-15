@@ -39,6 +39,10 @@ public:
 
 private:
 	static double averageCHODHitTime;
+	static uint l1RefTimeDetId;
+	static uint l0tpSourceId;
+	static uint chodSourceId;
+	static bool isCHODEmpty;
 
 };
 

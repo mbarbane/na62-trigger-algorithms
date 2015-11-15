@@ -109,8 +109,9 @@ uint_fast8_t L1TriggerProcessor::compute(Event* const event) {
 	}
 //	printf("L1TriggerProcessor.cpp: chodTrigger %d\n", chodTrigger);
 
-//	if (SourceIDManager::isCedarActive() && l1Info_->isL1CHODProcessed()) {
-	if (SourceIDManager::isCedarActive()) {
+//	LOG_INFO << "L1CHODProcessed boolean1 " << l1Info_->isL1CHODProcessed() << ENDL;
+	if (SourceIDManager::isCedarActive() && l1Info_->isL1CHODProcessed()) {
+//	if (SourceIDManager::isCedarActive()) {
 		cedarTrigger = KtagAlgo::processKtagTrigger(decoder,l1Info_);
 		if (cedarTrigger != 0) {
 			L1Downscaling::processAlgorithm(cedarAlgorithmId);
@@ -126,8 +127,9 @@ uint_fast8_t L1TriggerProcessor::compute(Event* const event) {
 //	}
 //	printf("L1TriggerProcessor.cpp: richTrigger %d\n", richTrigger);
 
-//	if (SourceIDManager::isLavActive() && l1Info_->isL1CHODProcessed()) {
-	if (SourceIDManager::isLavActive()) {
+//	LOG_INFO << "L1CHODProcessed boolean2 " << l1Info_->isL1CHODProcessed() << ENDL;
+	if (SourceIDManager::isLavActive() && l1Info_->isL1CHODProcessed()) {
+//	if (SourceIDManager::isLavActive()) {
 		lavTrigger = LAVAlgo::processLAVTrigger(decoder,l1Info_);
 		if (lavTrigger != 0) {
 			L1Downscaling::processAlgorithm (lavAlgorithmId);
@@ -136,8 +138,9 @@ uint_fast8_t L1TriggerProcessor::compute(Event* const event) {
 //	printf("L1TriggerProcessor.cpp: lavTrigger %d\n", lavTrigger);
 
 	l1Info_->resetL1CHODProcessed();
-//	LOG_INFO << "Reset L1CHODProcessed boolean " << l1Info_->isL1CHODProcessed() << ENDL;
-
+//	LOG_INFO << "Reset L1CHODProcessed boolean3 " << l1Info_->isL1CHODProcessed() << ENDL;
+	l1Info_->resetCHODEmptyFlag();
+//	LOG_INFO << "Reset L1CHODEmpty flag " << l1Info_->getCHODEmptyFlag() << ENDL;
 	/*
 	 * Reduction of specific trigger algorithms
 	 *
@@ -181,5 +184,8 @@ uint_fast8_t L1TriggerProcessor::compute(Event* const event) {
 	return l1Trigger;
 }
 
+void L1TriggerProcessor::setL1ReferenceTimeSource(uint l0SourceId){
+	l1Info_->setL1ReferenceTimeSource(l0SourceId);
+}
 }
 /* namespace na62 */

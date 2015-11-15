@@ -46,6 +46,10 @@ private:
 //	static int quadrantID;
 	static int planeID;
 	static double averageHitTime;
+	static uint l1RefTimeDetId;
+	static uint l0tpSourceId;
+	static uint chodSourceId;
+	static bool isCHODEmpty;
 
 };
 

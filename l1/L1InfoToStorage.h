@@ -25,6 +25,18 @@ public:
 	double getCHODAverageTime();
 	void setCHODAverageTime(double time);
 
+	double getRICHAverageTime();
+	void setRICHAverageTime(double time);
+
+	uint getL1ReferenceTimeSource();
+	void setL1ReferenceTimeSource(uint l0SourceId);
+
+	bool getCHODEmptyFlag();
+	void setCHODEmptyFlag(bool chodEmptyFlag);
+	void resetCHODEmptyFlag() {
+		isCHODEmptyFlag_ = false;
+	}
+
 	void setL1CHODProcessed() {
 		L1CHODProcessed_ = true;
 	}
@@ -37,12 +49,29 @@ public:
 		L1CHODProcessed_ = false;
 	}
 
+	void setL1RICHProcessed() {
+		L1RICHProcessed_ = true;
+	}
+
+	bool isL1RICHProcessed() const {
+		return L1RICHProcessed_;
+	}
+
+	void resetL1RICHProcessed() {
+		L1RICHProcessed_ = false;
+	}
+
+
 private:
 
 	static L1InfoToStorage* theInstance;  // singleton instance
 
 	double chodTime;
 	bool L1CHODProcessed_;
+	double richTime;
+	bool L1RICHProcessed_;
+	uint l1ReferenceTimeSource_;
+	bool isCHODEmptyFlag_;
 
 };
 

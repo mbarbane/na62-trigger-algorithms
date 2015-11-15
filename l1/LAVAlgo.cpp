@@ -26,6 +26,10 @@ int * LAVAlgo::lgGeo = infoLAV_->getGeoLGMap();
 int LAVAlgo::hit[maxNROchs];
 uint LAVAlgo::nHits;
 double LAVAlgo::averageCHODHitTime = 0.;
+uint LAVAlgo::l1RefTimeDetId;
+uint LAVAlgo::l0tpSourceId = 0;
+uint LAVAlgo::chodSourceId = 1;
+bool LAVAlgo::isCHODEmpty = false;
 
 LAVAlgo::LAVAlgo() {
 }
@@ -34,7 +38,8 @@ LAVAlgo::~LAVAlgo() {
 // TODO Auto-generated destructor stub
 }
 
-uint_fast8_t LAVAlgo::processLAVTrigger(DecoderHandler& decoder, L1InfoToStorage* l1Info) {
+uint_fast8_t LAVAlgo::processLAVTrigger(DecoderHandler& decoder,
+		L1InfoToStorage* l1Info) {
 
 	nHits = 0;
 
@@ -42,8 +47,18 @@ uint_fast8_t LAVAlgo::processLAVTrigger(DecoderHandler& decoder, L1InfoToStorage
 
 	using namespace l0;
 
+//	LOG_INFO<< "l1ReferenceTimeSource " << l1Info->getL1ReferenceTimeSource() << ENDL;
+//	LOG_INFO<< "l0tpSourceId " << l0tpSourceId << ENDL;
+//	LOG_INFO<< "chodSourceId " << chodSourceId << ENDL;
+
+	l1RefTimeDetId = l1Info->getL1ReferenceTimeSource();
+//	LOG_INFO<< "l1RefTimeDetId " << l1RefTimeDetId << ENDL;
+
 	averageCHODHitTime = l1Info->getCHODAverageTime();
 //	LOG_INFO<< "PATchodtime " << averageCHODHitTime << ENDL;
+
+	isCHODEmpty = l1Info->getCHODEmptyFlag();
+//	LOG_INFO<< "PATchodEmptyFlag " << isCHODEmpty << ENDL;
 
 	uint nEdges_tot = 0;
 
@@ -108,7 +123,12 @@ uint_fast8_t LAVAlgo::processLAVTrigger(DecoderHandler& decoder, L1InfoToStorage
 //			LOG_INFO<< "Readout Channel ID per Tel62 " << roChIDPerTrb << ENDL;
 
 //			if (((roChID & 1) == 0) && (dt_l0tp < 20. || dt_chod < 20.)) {
-			if (((roChID & 1) == 0) && (dt_l0tp < 20.)) {
+//			if (((roChID & 1) == 0) && (dt_l0tp < 20.)) {
+			if (((roChID & 1) == 0)
+					&& ((!isCHODEmpty && (dt_chod < 20.)
+							&& (l1RefTimeDetId == chodSourceId))
+							|| ((dt_l0tp < 20.)
+									&& (l1RefTimeDetId == l0tpSourceId)))) {
 				if (edge_IDs[iEdge]) {
 					hit[roChIDPerTrb]++;
 //					LOG_INFO<< "Increment hit[" << roChIDPerTrb << "] to " << hit[roChIDPerTrb] << ENDL;
@@ -117,7 +137,7 @@ uint_fast8_t LAVAlgo::processLAVTrigger(DecoderHandler& decoder, L1InfoToStorage
 //					LOG_INFO<< "Increment nHits " << nHits << ENDL;
 				}
 			} else {
-//				printf("ODD! - Soglia alta! - Out Of Time! \n");
+//				printf("ODD! - Soglia alta! - Out Of Time! - or CHOD is Empty!!!\n");
 			}
 		}
 //	LOG_INFO<< "time check " << time[2].tv_sec << " " << time[2].tv_usec << ENDL;
